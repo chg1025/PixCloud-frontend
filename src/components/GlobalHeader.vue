@@ -5,7 +5,7 @@
         <RouterLink to="/">
           <div class="title-bar">
             <img class="logo" src="../assets/logo.svg" alt="logo" />
-            <div class="title">Vue3项目模版</div>
+            <div class="title">PixCloud云图库</div>
           </div>
         </RouterLink>
       </a-col>
