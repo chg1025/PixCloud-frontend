@@ -18,13 +18,14 @@
           @click="doMenuClick"
         />
       </a-col>
-      <a-col flex="120px">
+      <a-col flex="60px">
         <div class="user-login-status">
           <div v-if="loginUserStore.loginUser.id">
             <a-dropdown>
               <a-space>
                 <a-avatar :src="loginUserStore.loginUser.userAvatar" size="large" />
-                {{ loginUserStore.loginUser.userName ?? '无名' }}
+                <!-- 适配移动端，把用户名隐藏-->
+                <!-- {{ loginUserStore.loginUser.userName ?? '无名' }}-->
               </a-space>
               <template #overlay>
                 <a-menu>
@@ -96,9 +97,19 @@ const originItems = [
     title: '主页',
   },
   {
+    key: '/add_picture',
+    label: '上传图片',
+    title: '上传图片 ',
+  },
+  {
     key: '/admin/userManage',
     label: '用户管理',
     title: '用户管理',
+  },
+  {
+    key: '/admin/pictureManage',
+    label: '图片管理',
+    title: '图片管理',
   },
   {
     key: 'others',
