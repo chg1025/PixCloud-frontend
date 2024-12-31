@@ -118,7 +118,7 @@ const getPictureTagCategory = async () => {
       }
     })
   } else {
-    message.error('创建失败' + res.data.message)
+    message.error('获取标签分类列表失败' + res.data.message)
   }
 }
 
@@ -140,6 +140,7 @@ const getOldPicture = async () => {
   if (res.data.code === 0 && res.data.data) {
     const data = res.data.data
     picture.value = data
+    pictureForm.name = data.name
     pictureForm.introduction = data.introduction
     pictureForm.tags = data.tags
     pictureForm.category = data.category

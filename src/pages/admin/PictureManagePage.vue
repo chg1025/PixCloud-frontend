@@ -93,6 +93,7 @@ import {
 } from '@/api/pictureController'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
+import { formatSize } from '@/utils'
 
 const columns = [
   {
@@ -270,22 +271,11 @@ const getPictureTagCategory = async () => {
       }
     })
   } else {
-    message.error('创建失败' + res.data.message)
+    message.error('获取标签分类列表失败' + res.data.message)
   }
 }
 
 onMounted(() => {
   getPictureTagCategory()
 })
-
-/**
- * 格式化文件大小函数
- * @param size 文件大小（以字节为单位）
- * @returns 格式化后的字符串，例如 "488.28KB" 或 "1.91MB"
- */
-const formatSize: (size: number) => string = (size) => {
-  return size < 1024 * 1024
-    ? (size / 1024).toFixed(2) + 'KB'
-    : (size / (1024 * 1024)).toFixed(2) + 'MB'
-}
 </script>
