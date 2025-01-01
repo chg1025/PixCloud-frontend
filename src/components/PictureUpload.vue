@@ -41,7 +41,7 @@ const handleUpload = async ({ file }: any) => {
     if (res.data.code === 0 && res.data.message) {
       message.success('图片上传成功')
       // 将上传成功的信息返回给父组件
-      props.onSuccess?.(res.data.data)
+      props.onSuccess?.({ ...res.data.data })
     } else {
       message.error('图片上传失败' + res.data.message)
     }
@@ -79,7 +79,8 @@ const beforeUpload = (file: UploadProps['fileList'][number]) => {
   min-width: 152px;
   margin-top: 12px;
 }
-.picture-upload img{
+
+.picture-upload img {
   max-width: 100%;
   max-height: 360px;
 }
