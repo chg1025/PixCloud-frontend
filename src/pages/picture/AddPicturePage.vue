@@ -67,6 +67,7 @@ import {
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import UrlPictureUpload from '@/components/UrlPictureUpload.vue'
+import { useLoginUserStore } from '@/stores/useLoginUserStore'
 
 /**
  * 图片上传成功
@@ -81,6 +82,9 @@ const onSuccess = (newPicture: API.PictureVO) => {
 }
 
 const uploadType = ref<'file' | 'url'>('file')
+
+const loginUserStore = useLoginUserStore()
+const loginUser = loginUserStore.loginUser
 
 /**
  * 提交表单
@@ -98,13 +102,15 @@ const handleSubmit = async (values: any) => {
   })
   // 操作成功
   if (res.data.code === 0 && res.data.data) {
-    if (route.query?.id) {
+    if (loginUser.userRole === 'admin' && route.query?.id) {
       message.success('修改成功')
+      // 跳转到详情页
+      router.push(`/picture/${pictureId}`)
     } else {
-      message.success('上传成功')
+      message.success('上传成功, 待审核')
+      // 跳转到首页
+      router.push(`/`)
     }
-    // 跳转到详情页
-    router.push(`/picture/${pictureId}`)
   } else {
     message.error('创建失败' + res.data.message)
   }

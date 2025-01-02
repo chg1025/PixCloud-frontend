@@ -162,6 +162,7 @@ const columns = [
   {
     title: '名称',
     dataIndex: 'name',
+    width: 40,
     customHeaderCell: () => ({
       style: { textAlign: 'center' }, // 表头居中
     }),
@@ -170,6 +171,7 @@ const columns = [
     title: '简介',
     dataIndex: 'introduction',
     ellipsis: true,
+    width: 80,
     customHeaderCell: () => ({
       style: { textAlign: 'center' }, // 表头居中
     }),
@@ -243,7 +245,7 @@ const searchParams = reactive<API.PictureQueryRequest>({
   current: 1,
   pageSize: 10,
   sortField: 'createTime',
-  sortOrder: 'ascend',
+  sortOrder: 'descend',
 })
 
 // 获取数据
