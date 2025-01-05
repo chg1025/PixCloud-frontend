@@ -4,7 +4,9 @@
       <h2>图片管理</h2>
       <a-space>
         <a-button type="primary" href="/add_picture" target="_blank">上传图片</a-button>
-        <a-button type="primary" href="/add_picture/batch" target="_blank" ghost>批量上传图片</a-button>
+        <a-button type="primary" href="/add_picture/batch" target="_blank" ghost
+          >批量上传图片
+        </a-button>
       </a-space>
     </a-flex>
 
@@ -207,6 +209,14 @@ const columns = [
     }),
   },
   {
+    title: '空间 id',
+    dataIndex: 'spaceId',
+    width: 80,
+    customHeaderCell: () => ({
+      style: { textAlign: 'center' }, // 表头居中
+    }),
+  },
+  {
     title: '审核信息',
     dataIndex: 'reviewMessage',
     customHeaderCell: () => ({
@@ -252,6 +262,7 @@ const searchParams = reactive<API.PictureQueryRequest>({
 const fetchData = async () => {
   const res = await listPictureByPageUsingPost({
     ...searchParams,
+    // nullSpaceId: true,
   })
   if (res.data.data) {
     dataList.value = res.data.data.records ?? []

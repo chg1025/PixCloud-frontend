@@ -116,17 +116,17 @@ declare namespace API {
     id?: number
   }
 
-  type getPictureVOByIdUsingGET1Params = {
-    /** id */
-    id?: number
-  }
-
   type getPictureVOByIdUsingGETParams = {
     /** id */
     id?: number
   }
 
   type getSpaceByIdUsingGETParams = {
+    /** id */
+    id?: number
+  }
+
+  type getSpaceVOByIdUsingGETParams = {
     /** id */
     id?: number
   }
@@ -322,6 +322,11 @@ declare namespace API {
     totalSize?: number
     updateTime?: string
     userId?: number
+  }
+
+  type SpaceAddRequest = {
+    spaceLevel?: number
+    spaceName?: string
   }
 
   type SpaceEditRequest = {

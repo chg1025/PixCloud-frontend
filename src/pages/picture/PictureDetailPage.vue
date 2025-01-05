@@ -70,6 +70,7 @@
                 v-if="hasEditPermission()"
                 danger
                 @click="doDelete"
+                :loading="loading"
                 :icon="h(DeleteOutlined)"
                 >删除
               </a-button>
@@ -134,11 +135,15 @@ const hasEditPermission = () => {
 
 // 编辑数据
 const doEdit = async () => {
-  router.push(`/add_picture?id=` + picture.value.id)
+  router.push({
+    path: `/add_picture`,
+    query: { id: picture.value.id, spaceId: picture.value.spaceId },
+  })
 }
 
 // 删除数据
 const doDelete = async () => {
+  loading.value = true
   const id = picture.value.id
   if (!id) {
     return
@@ -147,12 +152,19 @@ const doDelete = async () => {
   if (res.data.code === 0) {
     message.success('删除成功')
     // 跳转到首页
-    router.push({
-      path: `/`,
-    })
+    if (picture.value.spaceId) {
+      await router.push({
+        path: `/space/${picture.value.spaceId}`,
+      })
+    } else {
+      await router.push({
+        path: `/`,
+      })
+    }
   } else {
     message.error('删除失败')
   }
+  loading.value = false
 }
 
 onMounted(() => {

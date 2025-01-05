@@ -1,15 +1,19 @@
 <template>
   <div id="addPicturePage">
     <h2 style="margin-bottom: 16px">{{ route.query?.id ? '编辑图片' : '上传图片' }}</h2>
+    <a-typography-paragraph v-if="spaceId" type="secondary">
+      保存至空间：<a :href="`/space/${spaceId}`" target="_blank">{{ spaceId }}</a>
+    </a-typography-paragraph>
+
     <!--选择上传方式-->
     <a-tabs v-model:activeKey="uploadType">
       <a-tab-pane key="file" tab="本地上传">
         <!-- 本地图片上传组件 -->
-        <PictureUpload :picture="picture" :onSuccess="onSuccess" />
+        <PictureUpload :picture="picture" :spaceId="spaceId" :onSuccess="onSuccess" />
       </a-tab-pane>
       <a-tab-pane key="url" tab="URL 上传" force-render>
         <!--URL图片上传组件-->
-        <UrlPictureUpload :picture="picture" :onSuccess="onSuccess" />
+        <UrlPictureUpload :picture="picture" :spaceId="spaceId" :onSuccess="onSuccess" />
       </a-tab-pane>
     </a-tabs>
 
@@ -58,7 +62,7 @@
 
 <script setup lang="ts">
 import PictureUpload from '@/components/PictureUpload.vue'
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import {
   editPictureUsingPost,
   getPictureVoByIdUsingGet,
@@ -75,6 +79,7 @@ import { useLoginUserStore } from '@/stores/useLoginUserStore'
 const pictureForm = reactive<API.PictureEditRequest>({})
 const picture = ref<API.PictureVO>()
 const router = useRouter()
+const route = useRoute()
 
 const onSuccess = (newPicture: API.PictureVO) => {
   picture.value = newPicture
@@ -82,6 +87,11 @@ const onSuccess = (newPicture: API.PictureVO) => {
 }
 
 const uploadType = ref<'file' | 'url'>('file')
+
+// 空间 id
+const spaceId = computed(() => {
+  return route.query?.spaceId
+})
 
 const loginUserStore = useLoginUserStore()
 const loginUser = loginUserStore.loginUser
@@ -97,6 +107,7 @@ const handleSubmit = async (values: any) => {
     return
   }
   const res = await editPictureUsingPost({
+    spaceId: spaceId.value,
     id: pictureId,
     ...values,
   })
@@ -107,9 +118,17 @@ const handleSubmit = async (values: any) => {
       // 跳转到详情页
       router.push(`/picture/${pictureId}`)
     } else {
-      message.success('上传成功, 待审核')
-      // 跳转到首页
-      router.push(`/`)
+      if (spaceId.value !== null) {
+        message.success('上传成功')
+        // 跳转到详情页
+        await router.push(`/picture/${pictureId}`)
+        return
+      } else {
+        message.success('上传成功, 待审核')
+        // 跳转到首页
+        await router.push(`/`)
+        return
+      }
     }
   } else {
     message.error('创建失败' + res.data.message)
@@ -145,7 +164,6 @@ onMounted(() => {
   getPictureTagCategory()
 })
 
-const route = useRoute()
 // 获取老数据
 const getOldPicture = async () => {
   // 获取到id

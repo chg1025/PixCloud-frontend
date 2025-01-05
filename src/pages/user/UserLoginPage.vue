@@ -20,14 +20,16 @@
         <RouterLink to="/user/register">去注册</RouterLink>
       </div>
       <a-form-item>
-        <a-button type="primary" html-type="submit" style="width: 100%">登录</a-button>
+        <a-button type="primary" html-type="submit" style="width: 100%" :loading="loading"
+          >登录
+        </a-button>
       </a-form-item>
     </a-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore'
 import { loginUsingPost } from '@/api/userController'
@@ -41,24 +43,27 @@ const formState = reactive<API.UserLoginRequest>({
 
 const router = useRouter()
 const loginUserStore = useLoginUserStore()
+const loading = ref(false)
 
 /**
  * 提交表单
  * @param values
  */
 const handleSubmit = async (values: any) => {
+  loading.value = true
   const res = await loginUsingPost(values)
   // 登录成功，把登录态保存到全局状态中
   if (res.data.code === 0 && res.data.data) {
     await loginUserStore.fetchLoginUser()
     message.success('登录成功')
-    router.push({
+    await router.push({
       path: '/',
       replace: true,
     })
   } else {
     message.error('登录失败，' + res.data.message)
   }
+  loading.value = false
 }
 </script>
 
