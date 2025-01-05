@@ -31,6 +31,8 @@
         </a-tooltip>
       </a-space>
     </a-flex>
+    <!--搜索表单 -->
+    <PictureSearchForm :onSearch="onSearch" />
 
     <!--图片列表-->
     <PictureList :data-list="dataList" :loading="loading" :showOp="true" :on-reload="fetchData" />
@@ -56,6 +58,7 @@ import {
 } from '@/api/pictureController'
 import { formatSize } from '@/utils'
 import PictureList from '@/components/PictureList.vue'
+import PictureSearchForm from '@/components/PictureSearchForm.vue'
 
 interface Props {
   id?: number
@@ -93,10 +96,8 @@ onMounted(() => {
 const dataList = ref<API.PictureVO[]>([])
 const total = ref(0)
 
-// 获取图片列表
-
 // 搜索条件
-const searchParams = reactive<API.PictureQueryRequest>({
+const searchParams = ref<API.PictureQueryRequest>({
   current: 1,
   pageSize: 12,
   sortField: 'createTime',
@@ -109,7 +110,7 @@ const fetchData = async () => {
 
   const params = {
     spaceId: props.id,
-    ...searchParams,
+    ...searchParams.value,
   }
   // 获取图片列表
   const res = await listPictureVoByPageUsingPost(params)
@@ -128,14 +129,18 @@ onMounted(() => {
 })
 
 const onPageChange = (page: number, pageSize: number) => {
-  searchParams.current = page
-  searchParams.pageSize = pageSize
+  searchParams.value.current = page
+  searchParams.value.pageSize = pageSize
   fetchData()
 }
 
-const onSearch = () => {
-  // 重置搜索条件
-  searchParams.current = 1
+// 搜索
+const onSearch = (newSearchParams: API.PictureQueryRequest) => {
+  searchParams.value = {
+    ...searchParams.value,
+    ...newSearchParams,
+  }
+  searchParams.value.current = 1
   fetchData()
 }
 
