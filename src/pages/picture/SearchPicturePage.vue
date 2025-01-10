@@ -16,6 +16,7 @@
     <a-list
       :grid="{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }"
       :data-source="dataList"
+      :loading="loading"
     >
       <template #renderItem="{ item }">
         <a-list-item style="padding: 0">
@@ -39,6 +40,7 @@ import { getPictureVoByIdUsingGet, searchPictureByPictureUsingPost } from '@/api
 import { message } from 'ant-design-vue'
 
 const route = useRoute()
+const loading = ref(false)
 
 // 图片 id
 const pictureId = computed(() => {
@@ -69,6 +71,7 @@ onMounted(() => {
 const dataList = ref<API.ImageSearchResult[]>([])
 // 获取搜图结果
 const fetchData = async () => {
+  loading.value = true
   const res = await searchPictureByPictureUsingPost({
     pictureId: pictureId.value,
   })
@@ -77,11 +80,11 @@ const fetchData = async () => {
   } else {
     message.error('获取数据失败，' + res.data.message)
   }
+  loading.value = false
 }
 
 // 页面加载时请求一次
 onMounted(() => {
   fetchData()
 })
-
 </script>

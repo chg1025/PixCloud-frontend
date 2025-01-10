@@ -32,31 +32,31 @@
               </template>
             </a-card-meta>
             <template v-if="showOp" #actions>
-              <a-space @click="(e) => doSearchImage(picture, e)">
-                <SearchOutlined />
-                搜索
-              </a-space>
-              <a-space @click="(e) => doEdit(picture, e)">
-                <EditOutlined />
-                编辑
-              </a-space>
-              <a-space @click="(e) => doDelete(picture, e)">
-                <DeleteOutlined />
-                删除
-              </a-space>
+              <ShareAltOutlined @click="(e) => doShareImage(picture, e)" />
+              <SearchOutlined @click="(e) => doSearchImage(picture, e)" />
+              <EditOutlined @click="(e) => doEdit(picture, e)" />
+              <DeleteOutlined @click="(e) => doDelete(picture, e)" />
             </template>
           </a-card>
         </a-list-item>
       </template>
     </a-list>
+    <ShowModal ref="shareModalRef" :link="shareLink" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons-vue'
+import {
+  EditOutlined,
+  DeleteOutlined,
+  SearchOutlined,
+  ShareAltOutlined,
+} from '@ant-design/icons-vue'
 import { deletePictureUsingPost } from '@/api/pictureController'
 import { message } from 'ant-design-vue'
+import { ref } from 'vue'
+import ShowModal from '@/components/ShowModal.vue'
 
 interface Props {
   dataList?: API.PictureVO[]
@@ -81,16 +81,17 @@ const doClickPicture = (picture: API.PictureVO) => {
 }
 
 // 编辑数据
-const doEdit = (picture: API.Picture, e: any) => {
+const doEdit = (picture: API.PictureVO, e: Event) => {
   // 阻止冒泡
   e.stopImmediatePropagation()
   router.push({
     path: `/add_picture`,
     query: { id: picture.id, spaceId: picture.spaceId },
-  })}
+  })
+}
 
 // 删除数据
-const doDelete = async (picture: API.Picture, e: any) => {
+const doDelete = async (picture: API.PictureVO, e: Event) => {
   // 阻止冒泡
   e.stopImmediatePropagation()
   const id = picture.id
@@ -104,15 +105,26 @@ const doDelete = async (picture: API.Picture, e: any) => {
   } else {
     message.error('删除失败')
   }
-
 }
 
 // 搜索
-const doSearchImage = (picture, e) => {
+const doSearchImage = (picture: API.PictureVO, e: Event) => {
   e.stopPropagation()
   window.open(`/search_picture?pictureId=${picture.id}`)
 }
 
+// 分享
+
+const shareModalRef = ref()
+const shareLink = ref<string>()
+const doShareImage = (picture: API.PictureVO, e: Event) => {
+  e.stopPropagation()
+  shareLink.value = `${window.location.protocol}//${window.location.host}/picture/${picture.id}`
+  // alert(shareLink.value)
+  if (shareModalRef.value) {
+    shareModalRef.value.showModal()
+  }
+}
 </script>
 
 <style>
