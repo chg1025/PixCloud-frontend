@@ -73,6 +73,14 @@ const handleSubmit = async (values: any) => {
   margin: 0 auto;
 }
 
+@media (max-width: 768px) {
+  #userLoginPage {
+    width: 100%;
+    padding: 16px;
+  }
+}
+
+
 .title {
   text-align: center;
   margin-bottom: 16px;

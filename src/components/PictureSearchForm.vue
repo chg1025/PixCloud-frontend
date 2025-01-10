@@ -104,7 +104,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
-import { listPictureTagCategoryUsingGet } from '@/api/pictureController'
+import { listPictureTagCategoryUsingGet, searchPictureByColorUsingPost } from '@/api/pictureController'
 import { message } from 'ant-design-vue'
 
 interface Props {

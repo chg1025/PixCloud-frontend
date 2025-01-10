@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite --host 0.0.0.0",
     "build": "run-p type-check \"build-only {@}\" --",
     "openapi": "node openapi.config.js",
     "preview": "vite preview",
@@ -19,7 +19,8 @@
     "file-saver": "^2.0.5",
     "pinia": "^2.2.6",
     "vue": "^3.5.12",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "vue3-colorpicker": "^2.3.0"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
