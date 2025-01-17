@@ -1,8 +1,8 @@
 <template>
-  <div class="picture-list">
+  <div class="picture-list" >
     <!--图片列表-->
     <a-list
-      :grid="{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }"
+      :grid="{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xxl: 6 }"
       :data-source="dataList"
       :loading="loading"
     >
@@ -128,7 +128,21 @@ const doShareImage = (picture: API.PictureVO, e: Event) => {
 </script>
 
 <style>
+/* 保持原有样式 */
 .picture-list {
   margin-top: 16px;
+  text-align: center; /* 确保整个列表内容居中 */
 }
+
+/* 确保图片卡片在小屏时居中 */
+.picture-list .ant-list-item {
+  display: flex;
+  justify-content: center; /* 水平方向居中对齐 */
+}
+
+/* 卡片样式优化 */
+.picture-list .ant-card {
+  margin: 0 auto; /* 确保每个卡片居中 */
+}
+
 </style>
