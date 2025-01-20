@@ -7,7 +7,7 @@
       :loading="loading"
     >
       <template #renderItem="{ item: picture }">
-        <a-list-item style="padding: 0">
+        <a-list-item style="padding: 0;width: 100%">
           <!-- 单张图片 --->
           <a-card hoverable style="width: 240px" @click="doClickPicture(picture)">
             <template #cover>

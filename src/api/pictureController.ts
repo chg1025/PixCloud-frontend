@@ -158,6 +158,14 @@ export async function getPictureOutPaintingTaskUsingGet(
   )
 }
 
+/** refreshAllListPictureVOByPageCache GET /api/picture/refreshAll */
+export async function refreshAllListPictureVoByPageCacheUsingGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseBoolean_>('/api/picture/refreshAll', {
+    method: 'GET',
+    ...(options || {}),
+  })
+}
+
 /** pictureReview POST /api/picture/review */
 export async function pictureReviewUsingPost(
   body: API.PictureReviewRequest,

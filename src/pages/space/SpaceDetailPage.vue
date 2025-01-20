@@ -7,6 +7,16 @@
       </h2>
       <a-space size="middle">
         <a-button :icon="h(EditOutlined)" @click="doBatchEdit"> 批量编辑</a-button>
+        <a-button
+          type="primary"
+          ghost
+          :icon="h(BarChartOutlined)"
+          :href="`/space_analyze?spaceId=${id}`"
+          target="_blank"
+        >
+          空间分析
+        </a-button>
+
         <a-tooltip title="上传图片" color="blue" placement="bottom">
           <a-button
             type="primary"
@@ -37,7 +47,7 @@
 
     <!-- 按颜色搜索 -->
     <a-form-item label="按颜色搜索" style="margin-top: 16px">
-      <color-picker format="hex" @pureColorChange="onColorChange" />
+      <color-picker format="hex"  @pureColorChange="onColorChange" />
     </a-form-item>
 
     <!--图片列表-->
@@ -76,7 +86,7 @@ import PictureSearchForm from '@/components/PictureSearchForm.vue'
 import { ColorPicker } from 'vue3-colorpicker'
 import 'vue3-colorpicker/style.css'
 import BatchEditPictureModal from '@/components/BatchEditPictureModal.vue'
-import { EditOutlined } from '@ant-design/icons-vue'
+import { EditOutlined, BarChartOutlined } from '@ant-design/icons-vue'
 
 interface Props {
   id?: number
@@ -240,12 +250,10 @@ const onBatchEditPictureSuccess = () => {
 
 // 打开批量编辑弹窗
 const doBatchEdit = () => {
-
   if (batchEditPictureModalRef.value) {
     batchEditPictureModalRef.value.openModal()
   }
 }
-
 </script>
 
 <style>
